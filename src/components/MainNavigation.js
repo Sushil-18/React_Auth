@@ -42,7 +42,7 @@ function MainNavigation() {
           </li>
           <li>
             <NavLink
-              to="/signup"
+              to="/auth?mode=signup"
               className={({ isActive }) =>
                 isActive ? classes.active : undefined
               }
