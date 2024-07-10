@@ -35,8 +35,8 @@ export async function action({ request }) {
   const resData = await response.json();
 
   const token = resData.token;
-  //Storing token in the most secured place as per standards i.e in http only cookie
-  document.cookie = `token=${resData.token}; Secure; HttpOnly; SameSite=Strict`;
+  //Storing JWT token in localstorage as backend accepts it from only localhost
+  localStorage.setItem("token", token);
 
   return redirect("/");
 }
