@@ -17,6 +17,7 @@ import AuthenticationPage, {
   action as authAction,
 } from "./pages/Authentication";
 import { LogOut as logoutAction } from "./pages/LogOut";
+import { authLoader } from "./util/auth";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,7 @@ const router = createBrowserRouter([
                 path: "edit",
                 element: <EditEventPage />,
                 action: manipulateEventAction,
+                loader: authLoader,
               },
             ],
           },
@@ -56,6 +58,7 @@ const router = createBrowserRouter([
             path: "new",
             element: <NewEventPage />,
             action: manipulateEventAction,
+            loader: authLoader,
           },
         ],
       },

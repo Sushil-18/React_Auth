@@ -1,5 +1,7 @@
 import { json, redirect } from "react-router-dom";
 import AuthForm from "../components/AuthForm";
+import store from "../store/Store";
+import { login } from "../store/authSlice";
 
 function AuthenticationPage() {
   return <AuthForm />;
@@ -37,6 +39,7 @@ export async function action({ request }) {
   const token = resData.token;
   //Storing JWT token in localstorage as backend accepts it from only localhost
   localStorage.setItem("token", token);
+  store.dispatch(login());
 
   return redirect("/");
 }
