@@ -39,6 +39,9 @@ export async function action({ request }) {
   const token = resData.token;
   //Storing JWT token in localstorage as backend accepts it from only localhost
   localStorage.setItem("token", token);
+  const expiration = new Date();
+  expiration.setHours(expiration.getHours() + 1);
+  localStorage.setItem("expiration", expiration.toISOString());
   store.dispatch(login());
 
   return redirect("/");
