@@ -1,8 +1,10 @@
-import { Outlet, useNavigation, useSubmit } from "react-router-dom";
+import { Outlet, useSubmit } from "react-router-dom";
 
 import MainNavigation from "../components/MainNavigation";
-import { getAuthToken } from "../util/auth";
+import { getAuthToken, getTokenDuration } from "../util/auth";
 import { useEffect } from "react";
+import store from "../store/Store";
+import { login } from "../store/authSlice";
 
 function RootLayout() {
   const token = getAuthToken();
@@ -13,9 +15,20 @@ function RootLayout() {
       return;
     }
 
+    if (token) {
+      store.dispatch(login());
+    }
+
+    if (token === "EXPIRED") {
+      submit(null, { action: "logout", method: "POST" });
+      return;
+    }
+
+    const tokenDuration = getTokenDuration();
+
     setTimeout(() => {
       submit(null, { action: "logout", method: "POST" });
-    }, 1 * 60 * 60 * 1000);
+    }, tokenDuration);
   }, [token, submit]);
 
   return (

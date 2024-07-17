@@ -27,4 +27,6 @@ export function authLoader() {
   if (!token) {
     return redirect("/auth");
   }
+
+  return null;
 }
