@@ -1,9 +1,36 @@
 package com.example.backend.controllers;
 
+import com.example.backend.dto.EventDTO;
+import com.example.backend.services.EventService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("events/")
 public class EventController {
+
+    private final EventService eventService;
+    @GetMapping
+    public ResponseEntity<List<EventDTO>> getAllEvents(){
+        return eventService.getAllEvents();
+    }
+
+    @GetMapping("{postId}")
+    public ResponseEntity<EventDTO> getEventById(@PathVariable("postId") Long eventId){
+        return eventService.getEventById(eventId);
+    }
+
+    @PostMapping("new")
+    public ResponseEntity<EventDTO> addEvent(@RequestBody EventDTO eventDTO){
+        return eventService.addEvent(eventDTO);
+    }
+
+    @PutMapping("{eventId}/edit")
+    public ResponseEntity<EventDTO> editEvent(@PathVariable Long eventId, @RequestBody EventDTO eventDTO){
+        return eventService.editEvent(eventId,eventDTO);
+    }
 }
