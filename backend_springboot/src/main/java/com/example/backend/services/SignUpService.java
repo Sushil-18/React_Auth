@@ -1,6 +1,7 @@
 package com.example.backend.services;
 
 import com.example.backend.dto.LoginDTO;
+import com.example.backend.entities.LoginEntity;
 import com.example.backend.repository.LoginRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -13,6 +14,9 @@ public class SignUpService {
     private final LoginRepository loginRepository;
     private final ModelMapper modelMapper;
 
-    public ResponseEntity<LoginDTO> signup(LoginDTO logindto) {
+    public LoginDTO signup(LoginDTO logindto) {
+        LoginEntity loginEntity = modelMapper.map(logindto,LoginEntity.class);
+
+        return modelMapper.map(loginEntity,LoginDTO.class);
     }
 }

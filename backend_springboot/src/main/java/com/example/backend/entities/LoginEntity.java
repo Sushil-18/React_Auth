@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "events")
+@Table(name = "Login_Details")
 public class LoginEntity {
     @Id
     private String username;

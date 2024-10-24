@@ -16,7 +16,7 @@ public class LoginController {
     private final SignUpService signUpService;
 
     @PostMapping("/auth")
-    public ResponseEntity<LoginDTO> login(@RequestParam String mode, @RequestBody LoginDTO logindto) throws BadRequestException {
+    public LoginDTO login(@RequestParam String mode, @RequestBody LoginDTO logindto) throws BadRequestException {
         if(mode.equalsIgnoreCase("login")){
             return loginService.login(logindto);
         }

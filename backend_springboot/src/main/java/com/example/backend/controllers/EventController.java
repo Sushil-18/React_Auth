@@ -15,22 +15,22 @@ public class EventController {
 
     private final EventService eventService;
     @GetMapping
-    public ResponseEntity<List<EventDTO>> getAllEvents(){
+    public List<EventDTO> getAllEvents(){
         return eventService.getAllEvents();
     }
 
     @GetMapping("{postId}")
-    public ResponseEntity<EventDTO> getEventById(@PathVariable("postId") Long eventId){
+    public EventDTO getEventById(@PathVariable("postId") Long eventId){
         return eventService.getEventById(eventId);
     }
 
     @PostMapping("new")
-    public ResponseEntity<EventDTO> addEvent(@RequestBody EventDTO eventDTO){
+    public EventDTO addEvent(@RequestBody EventDTO eventDTO){
         return eventService.addEvent(eventDTO);
     }
 
     @PutMapping("{eventId}/edit")
-    public ResponseEntity<EventDTO> editEvent(@PathVariable Long eventId, @RequestBody EventDTO eventDTO){
+    public EventDTO editEvent(@PathVariable Long eventId, @RequestBody EventDTO eventDTO){
         return eventService.editEvent(eventId,eventDTO);
     }
 }
