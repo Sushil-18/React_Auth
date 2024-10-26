@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
-public class LoginDTO {
+public class UserDTO {
     @NotBlank(message = "Username cannot be empty") @Email(message = "Username must be valid email")
     private String username;
     @NotBlank(message = "Password cannot be empty") @Size(min = 8, message = "password length should be more than 8 characters")

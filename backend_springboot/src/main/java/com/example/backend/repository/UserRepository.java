@@ -1,9 +1,9 @@
 package com.example.backend.repository;
 
-import com.example.backend.entities.LoginEntity;
+import com.example.backend.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LoginRepository extends JpaRepository<LoginEntity,String> {
+public interface UserRepository extends JpaRepository<UserEntity,String> {
 }
