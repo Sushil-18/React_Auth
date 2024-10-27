@@ -29,4 +29,15 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(apiError,HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ApiError> handleUserAlreadyExists(UserAlreadyExistsException userAlreadyExistsException){
+        ApiError apiError = new ApiError.Builder()
+                .statusCode(HttpStatus.CONFLICT)
+                .error(userAlreadyExistsException.getMessage())
+                .message(userAlreadyExistsException.getLocalizedMessage())
+                .build();
+
+        return new ResponseEntity<>(apiError,HttpStatus.CONFLICT);
+    }
 }
