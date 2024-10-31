@@ -1,6 +1,7 @@
 package com.example.backend.config;
 
 import com.example.backend.security.JWTAuthFileter;
+import com.example.backend.security.JWTAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +23,7 @@ public class SecurityConfig {
             "/events", "/newsletter","/auth"
     };
 
-    private final JWTAuthFileter jwtAuthFileter;
+    private final JWTAuthFilter jwtAuthFilter;
 
 
     @Bean
@@ -35,11 +36,11 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .sessionManagement(sessionConfig -> sessionConfig
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthFileter, UsernamePasswordAuthenticationFilter.class)
-                .oauth2Login(oauth2Config -> oauth2Config
-                        .failureUrl("/login?error=true")
-                        .successHandler(oAuth2SuccessHandler))
-                
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+               // .oauth2Login(oauth2Config -> oauth2Config
+                 //       .failureUrl("/login?error=true")
+                   //     .successHandler(oAuth2SuccessHandler))
+
         return http.build();
     }
 
