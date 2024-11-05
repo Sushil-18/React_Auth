@@ -46,6 +46,7 @@ public class JWTService {
     public String createToken(Map<String , Objects> extraClaims, UserDTO userdto, Long expiration){
         return Jwts.builder()
                 .subject(userdto.getUsername())
+                .claim("userId",userdto.getId())
                 .claim("email",userdto.getUsername())
                 .claim("role",userdto.getRole())
                 .issuedAt(new Date(System.currentTimeMillis()))
@@ -57,6 +58,11 @@ public class JWTService {
     //Extract Username from token
     public String getUserName(String token){
         extractClaim(token, Claims::getSubject);
+    }
+
+    //Extract User ID from token
+    public long getUserId(String token){
+        extractClaim(token,Claims::getId);
     }
 
     //Extract a specific claim from the token

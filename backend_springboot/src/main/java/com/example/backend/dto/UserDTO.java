@@ -16,6 +16,7 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 public class UserDTO {
+    private Long id;
     @NotBlank(message = "Username cannot be empty") @Email(message = "Username must be valid email")
     private String username;
     @NotBlank(message = "Password cannot be empty") @Size(min = 8, message = "password length should be more than 8 characters")
@@ -25,8 +26,8 @@ public class UserDTO {
     @Value("ADMIN")
     private String role;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities(){
+   /* @Override
+    public Collection<? extends GrantedAuthority> getAuthority(){
         return List.of(new SimpleGrantedAuthority(role));
-    }
+    }*/
 }
