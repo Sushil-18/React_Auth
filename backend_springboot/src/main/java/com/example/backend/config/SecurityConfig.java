@@ -1,6 +1,5 @@
 package com.example.backend.config;
 
-import com.example.backend.security.JWTAuthFileter;
 import com.example.backend.security.JWTAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

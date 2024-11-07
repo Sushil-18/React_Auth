@@ -57,12 +57,12 @@ public class JWTService {
 
     //Extract Username from token
     public String getUserName(String token){
-        extractClaim(token, Claims::getSubject);
+      return extractClaim(token, Claims::getSubject);
     }
 
     //Extract User ID from token
     public long getUserId(String token){
-        extractClaim(token,Claims::getId);
+       return Long.parseLong(extractClaim(token,Claims::getId)) ;
     }
 
     //Extract a specific claim from the token
