@@ -1,6 +1,7 @@
 package com.example.backend.security;
 
 import com.example.backend.dto.UserDTO;
+import com.example.backend.entities.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -21,34 +22,34 @@ import java.util.function.Function;
 public class JWTService {
 
     @Value("${jwt.secretKey}")
-    private final String SECRET_KEY;
+    private String SECRET_KEY;
 
     @Value("${jwt.expirationTime}")
-    private final Long EXPIRATION_TIME;
+    private Long EXPIRATION_TIME;
 
     @Value("${jwt.refresh-token.expiration}")
-    private final Long REFRESH_TOKEN_EXPIRATION_TIME;
+    private Long REFRESH_TOKEN_EXPIRATION_TIME;
 
     private SecretKey getSecretKey(){
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
     }
 
     ///generates the new access token
-    public String generateToken(UserDTO userdto){
-        return createToken(new HashMap<>(), userdto,EXPIRATION_TIME);
+    public String generateToken(UserEntity userEntity){
+        return createToken(new HashMap<>(), userEntity,EXPIRATION_TIME);
     }
     //generates the refresh token
-    public String generateRefreshToken(UserDTO userdto){
-        return createToken(new HashMap<>(), userdto, REFRESH_TOKEN_EXPIRATION_TIME);
+    public String generateRefreshToken(UserEntity userEntity){
+        return createToken(new HashMap<>(), userEntity, REFRESH_TOKEN_EXPIRATION_TIME);
     }
 
     //method which creates the actual token and returns it.
-    public String createToken(Map<String , Objects> extraClaims, UserDTO userdto, Long expiration){
+    public String createToken(Map<String , Objects> extraClaims, UserEntity userEntity, Long expiration){
         return Jwts.builder()
-                .subject(userdto.getUsername())
-                .claim("userId",userdto.getId())
-                .claim("email",userdto.getUsername())
-                .claim("role",userdto.getRole())
+                .subject(userEntity.getUsername())
+                .claim("userId",userEntity.getId())
+                .claim("email",userEntity.getUsername())
+                .claim("role",userEntity.getRole())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSecretKey())
@@ -91,9 +92,9 @@ public class JWTService {
     }
 
     //check if token is valid or not
-    public boolean isTokenValid(String token, UserDTO userDTO){
+    public boolean isTokenValid(String token, UserEntity userEntity){
         final String username = getUserName(token);
-        return (username.equals(userDTO.getUsername()) && !isTokenExpired(token));
+        return (username.equals(userEntity.getUsername()) && !isTokenExpired(token));
     }
 
 }

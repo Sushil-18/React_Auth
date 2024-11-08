@@ -13,7 +13,7 @@ public class AuthenticationController {
    private final AuthenticationService authenticationService;
 
     @PostMapping("/auth")
-    public UserDTO login(@RequestParam String mode, @RequestBody UserDTO logindto) throws BadRequestException {
+    public String login(@RequestParam String mode, @RequestBody UserDTO logindto) throws BadRequestException {
         if(mode.equalsIgnoreCase("login")){
             return authenticationService.login(logindto);
         }

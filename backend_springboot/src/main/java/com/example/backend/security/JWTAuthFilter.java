@@ -34,32 +34,32 @@ public class JWTAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         try {
             final String requestTokenHeader = request.getHeader("Authorization");
-            if(requestTokenHeader == null || !requestTokenHeader.startsWith("Bearer")){
-                filterChain.doFilter(request,response);
+            if (requestTokenHeader == null || !requestTokenHeader.startsWith("Bearer")) {
+                filterChain.doFilter(request, response);
                 return;
             }
 
             String token = requestTokenHeader.split("Bearer")[1];
             Long userId = jwtService.getUserId(token);
 
-            if(userId != null && SecurityContextHolder.getContext().getAuthentication() == null){
+            if (userId != null) {
                 UserEntity user = userService.getUserById(userId);
-                UserDTO user1 = modelMapper.map(user,UserDTO.class);
-                if(jwtService.isTokenValid(token, user1)){
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                if (jwtService.isTokenValid(token, user)) {
+                    // Check if the user has the necessary authorities
+                    if (user.getAuthorities().stream()
+                            .anyMatch(authority -> authority.getAuthority().equals("ROLE_USER"))) {
+                        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authToken);
+                    }
                 }
             }
 
-            filterChain.doFilter(request,response);
+            filterChain.doFilter(request, response);
+        } catch (Exception exception) {
+            handlerExceptionResolver.resolveException(request, response, null, exception);
         }
-        catch (Exception exception){
-            handlerExceptionResolver.resolveException(request,response,null, exception);
-        }
-
     }
 }

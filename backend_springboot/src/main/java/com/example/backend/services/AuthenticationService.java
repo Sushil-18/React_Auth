@@ -6,6 +6,9 @@ import com.example.backend.exceptions.UserAlreadyExistsException;
 import com.example.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.backend.security.JWTService;
@@ -17,8 +20,9 @@ public class AuthenticationService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
-    public UserDTO signup(UserDTO userDTO) throws UserAlreadyExistsException {
+    public String signup(UserDTO userDTO) throws UserAlreadyExistsException {
         String email = userDTO.getUsername();
         boolean isUserAlreadyPresent = checkIfUserAlreadyExists(email);
 
@@ -28,13 +32,17 @@ public class AuthenticationService {
 
         UserEntity userEntity = modelMapper.map(userDTO, UserEntity.class);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
-        return modelMapper.map(userEntity, UserDTO.class);
+        return "User has been created";
     }
 
-    public UserDTO login(UserDTO userdto) {
-        UserEntity userEntity = modelMapper.map(userdto, UserEntity.class);
+    public String login(UserDTO userdto) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(userdto.getUsername(), userdto.getPassword())
+        );
 
-        return modelMapper.map(userEntity, UserDTO.class);
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        String token = jwtService.generateToken(user);
+        return token;
     }
 
     public boolean checkIfUserAlreadyExists(String userName){

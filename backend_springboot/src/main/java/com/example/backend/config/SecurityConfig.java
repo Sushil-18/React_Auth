@@ -24,7 +24,6 @@ public class SecurityConfig {
 
     private final JWTAuthFilter jwtAuthFilter;
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -39,7 +38,6 @@ public class SecurityConfig {
                // .oauth2Login(oauth2Config -> oauth2Config
                  //       .failureUrl("/login?error=true")
                    //     .successHandler(oAuth2SuccessHandler))
-
         return http.build();
     }
 
